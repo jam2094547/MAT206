@@ -1,0 +1,27 @@
+---
+title: "iris_visualazation"
+output:
+  pdf_document: default
+  ---
+
+
+```{r echo=FALSE}
+sepal.density<-density(iris$Sepal.Length)
+hist(iris$Sepal.Length, col="Red", main="Histogram of Sepal Length", xlab="Sepal length", ylab="Frequency")
+plot(sepal.density, main="Density Curve of Sepal length", xlab="Length of Sepal", ylab="Density")
+polygon(sepal.density, col="red", border="blue")
+```
+
+```{r echo=FALSE}
+boxplot(iris$Sepal.Width~iris$Species, main="Boxplot of Sepal Width of Different Species", xlab="Species of Iris's", ylab="Sepal Width", col=c("purple", "blue", "yellow"))
+```
+
+```{r echo=FALSE}
+species.table<-table(iris$Species)
+percentage<-c("33%","33%","33%")
+names<-c("Setosa", "Versicolor", "Virginica")
+lbl<-paste(names, percentage)
+pie(species.table, main="Pie Chart of Species Sampled", labels=lbl, col=c("Purple", "Blue", "Yellow"))
+barplot(species.table, main="Barplot for Species", xlab="Species", ylab="Count of Samples", col=c("Purple", "Blue", "Yellow"))
+```
+
