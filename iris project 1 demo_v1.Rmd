@@ -1,0 +1,67 @@
+---
+output:
+  pdf_document: default
+  html_document: default
+---
+---
+title: "iris_visualazation"
+output:
+  pdf_document: default
+  ---
+# In-line text can be used like this:
+The following is a brief visualization of the Iris dataset that is default within R. The average sepal length for the plants is `r mean(iris$Sepal.Length)`. The average sepal width for the plants is `r mean(iris$Sepal.Width)`. The average petal length for the plants is `r mean(iris$Petal.Length)`. The average petal width for the plants is `r mean(iris$Petal.Width)`. 
+
+# Five Number summary
+It is important to have a basic understanding of the spread of the data that is being looked at.
+```{r echo=FALSE}
+summary(iris$Sepal.Length)
+summary(iris$Sepal.Width)
+summary(iris$Petal.Length)
+summary(iris$Petal.Width)
+```
+The median and minimum are not too far apart in general. 
+
+# The Graphs!
+
+```{r echo=FALSE}
+par(mfrow=c(1,2))
+sepal.density<-density(iris$Sepal.Length)
+hist(iris$Sepal.Length, col="Red", main="Histogram of Sepal Length", xlab="Sepal length", ylab="Frequency")
+plot(sepal.density, main="Density Curve of Sepal length", xlab="Length of Sepal", ylab="Density")
+polygon(sepal.density, col="red", border="blue")
+```
+
+The histogram and density curve shows that the data may not follow a normal distribution, as it skews slightly right. However, it still has most of the data in the middle, so we cannot be sure by graphing alone. This would be something to look at later.
+
+# Boxplot
+
+```{r echo=FALSE}
+boxplot(iris$Sepal.Width~iris$Species, main="Boxplot of Sepal Width of Different Species", xlab="Species of Iris's", ylab="Sepal Width", col=c("purple", "blue", "yellow"))
+```
+
+When looking at the different species within the data, we see that setosa in general have a longer sepal width than versicolor and virginica. They also have an outlier at about 2.2 or so that may be skewing the data.
+
+# Barplot and Pie Chart
+```{r echo=FALSE}
+species.table<-table(iris$Species)
+percentage<-c("33%","33%","33%")
+names<-c("Setosa", "Versicolor", "Virginica")
+lbl<-paste(names, percentage)
+pie(species.table, main="Pie Chart of Species Sampled", labels=lbl, col=c("Purple", "Blue", "Yellow"))
+```
+
+```{r echo=FALSE}
+barplot(species.table, main="Barplot for Species", xlab="Species", ylab="Count of Samples", col=c("Purple", "Blue", "Yellow"))
+
+```
+
+These charts are important because they make sure that we are getting a representitive sample of individuals. If we oversampleed one species over the other, we could get skewed results. The colors themselves are more or less my joke, as they are a representation of each flower in a way.
+
+
+# Conclusion
+This is just a quick overview of how to use Rmd to create a report. I have talked about each point. I explained the graphs simply (too much information isn't necessarily good), I have the correct number of graphs, I used the proper elements, this isn't hard to understand, and I used descriptive statistics. 
+
+# Improvments
+The thing that I could have improved is looking at the range a little bit and comparing the median to the mean. I could have also looked at the CV and maybe have done individual distributions for each species. 
+# Better R work
+Look into the ggplot package. It allows for better visualization within R in general.
