@@ -1,0 +1,95 @@
+---
+title: "Examples mark 2"
+output: html_notebook
+---
+# Header 1
+## Header 2
+### Header 3
+This is generic text that you can use.
+If you want to do r code within the text, you use ` then you use the letter r, enter the r code, then end with another accent (not included), and the text will run.
+```{r}
+summary(iris)
+summary(iris$Sepal.Length)
+fivenum(iris$Sepal.Length)
+```
+
+For example, the median of the sepal length is `r median(iris$Sepal.Length)`
+
+The basic commands for adding labels to a graph are:
+
+main = "text here" this is the title for the graph
+xlab = "text here" this is the x label text. AKA words at the bottom of the graph
+ylab = "text here" this is the y label text. AKA words at the side of the graph
+col = "color here" or col = c("First color", "Second Color", "etc") for the colors
+freq = TRUE will give counts, freq = FALSE will give base percentage
+
+I'm being fancy, so I made a density plot.
+Density is calculated using the density function. I created a variable called density.sepal.length and added to it using <-
+The command is density(dataset$variable)
+
+I added to the histogram by using the lines(density.sepal.length). I then added a color line by using col = "Gold"
+
+```{r}
+hist(iris$Sepal.Length, main = "Histogram of Sepal Length", xlab= "Sepal Length", ylab = "Frequency", col = "Purple", freq=FALSE)
+density.sepal.length<-density(iris$Sepal.Length)
+lines(density.sepal.length, col = "Gold")
+```
+
+I could also do the density by itself by plotting density. But then you would have to add a new title, xlab, ylab, and color.
+```{r}
+plot(density.sepal.length)
+```
+
+
+The first thing to do with a pie chart is to create a table of the data. You need this because you need count data to make these charts. Iris is kinda boring, but it's my example.
+
+The command is:
+table(dataset$variable)
+
+Make sure you are looking at your classification. 
+
+To make your percentages, you can use a function called prop.table using the sytax:
+
+prop.table(table.name)
+
+So, I took everything and multipled it by 100. I also used the function round to round to zero digits.
+
+I will create a variable called titles, and name them Three Gears, Four Gears, and Five Gears using the command
+titles<-c("Three Gears", "Four Gears", "Five Gears")
+
+I will then use the paste function to combine the percentages and the titles into another variable called lbl.gear
+
+The syntax is:
+
+lbl.gear<-paste(titles, percentage)
+
+The pie function creates the pie chart. We will use the gear.mtcars to make the chart and the lbl.gear to add the labels.
+
+Then we add the title and colors as we want.
+```{r}
+gear.mtcars<-table(mtcars$gear)
+percentage<-round(prop.table(gear.mtcars)*100, digits=0)
+titles<-c("Three Gears", "Four Gears", "Five Gears")
+lbl.gear<-paste(titles, percentage)
+pie(gear.mtcars, labels=lbl.gear)
+```
+
+Now for the bar plot. This is easier, especially now that we have done that.
+
+I used the gear.mtcars, which is based off of a table, and ran that in the function barplot.
+
+barplot(gear.mtcars)
+
+Then you add colors, title, and labels as above.
+```{r}
+barplot(gear.mtcars)
+```
+The last one is the boxplot. This finally looks at mpg a little more. So, since I already have made people not use gears, I'll use it here.
+
+We use the ~ key to add a factor to the boxplot. This will breaks down the boxplot into different categories. This will allow you to see how the gears, in this case, affects the mpg. Here, 4 and 5 gears have a higher mpg than 3, and maybe significantly so.
+
+And we can add the title et al later.
+```{r}
+boxplot(mtcars$mpg~mtcars$gear)
+```
+
