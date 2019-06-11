@@ -1,0 +1,46 @@
+---
+title: "Project 2 Example"
+output:
+  pdf_document: default
+  html_notebook: default
+---
+
+# Figuring out the number of bets
+So, the first thing I want to do is to figure out the number of bets I will make per amount.
+
+Note, when I want to find out the total number of bets, I need to use the code %/% to find the total number of bets because I cannot have partial bets.
+```{r}
+amount.won<-2000
+bet.amount<-c(1,5,10,20,40,60,80,100,120,140,160,180,200)
+total.bets<-amount.won %/% bet.amount
+total.bets
+```
+
+So, now we need to find out how much money we can win based on all of these.
+
+So, I will calcualte this based off of a street bet (any three numbers in a row ex: 1, 2 or 3). I need to do some math.
+The odds to win are 17 to 1, so you take the total number of bets and divide by 17 to get the total number of wins.
+
+However, you can't have a partial win, so you need to use the function %/% to divide and round down. From there, you need to multiply it by the amount bet and by the payout. The payout for this is 11 2/3 to 1
+```{r}
+wins<-total.bets%/%17
+payout<-bet.amount*11.67
+amount.won<-wins*payout
+roi<-amount.won/2000*100
+wins
+amount.won
+roi
+```
+
+To find the confidence interval, you can use the function qnorm
+
+```{r}
+error<-qnorm(.975)/1*total.bets
+error
+left<-amount.won-error
+right<-amount.won+error
+left
+right
+```
+
+However, we can't have a negative amount won given that you can't lose free money. So our amount won is between 0 and $5285.32
