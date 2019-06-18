@@ -1,0 +1,49 @@
+---
+title: "Run a test"
+output: html_notebook
+---
+First of all, let's visualize it. We have different groups so lets run a boxplot
+```{r}
+boxplot(ToothGrowth$len~ToothGrowth$supp, xlab="Type of Supplement", ylab="Length of Odontoblasts in cm", main="Length of Odontoblasts based on Different types of supplements", col=c("red","blue"))
+```
+
+Now we need to see if the assumptions are present to run a t-test. 
+The first assumption that we are using an ordinal scale is true. The second assumption is that it's a random sampling. We have to assume that this is true. The third assumption we can check, that the distribution is normal.
+```{r}
+shapiro.test(ToothGrowth$len)
+```
+
+The Shapiro-Wilk normality test is a test that looks at the normal distribution of a data set and see's if it's normal or not. The null hypothesis is that there is a normal distribution and the alternative hypothesis is that it's different, with an alpha of 0.05. Since the p-value is 0.1091, we fail to reject the null hypothesis, meaning the data is noromal.
+
+However, we will still visualize
+```{r}
+hist(ToothGrowth$len, xlab="Tooth Growth in cm", ylab="Frequency of length", freq=FALSE, main="Histogram and normal distribution overlay of Tooth Growth", col="Blue", ylim=c(0,0.06))
+mean.growth<-mean(ToothGrowth$len)
+sd.growth<-sd(ToothGrowth$len)
+curve(dnorm(x, mean=mean.growth, sd=sd.growth),col="darkred", lwd=2, add=TRUE, yaxt="n")
+```
+
+Now we need to see if there are significant differences. So the T test.
+The null hypothesis is that there is no difference based on the supplement type and the alternative is that OJ has higher growth. There is an alpha of 0.05
+```{r}
+t.test(ToothGrowth$len~ToothGrowth$supp, alternative=c("greater"))
+```
+
+With a p-value of 0.03, we reject the null hypothesis, leaving the alternative hypothesis that OJ has higher growth.
+
+Note, that if we asked a different question (that there was no difference vs there is a difference, i.e. a two tailed versus a one tailed), we get a different result.
+
+```{r}
+t.test(ToothGrowth$len~ToothGrowth$supp, althernative=c("two.sided"))
+```
+
+As we get a p-value of 0.06, which would fail to reject the null hypothesis.
+
+Now we are going to do a quick regression to see if the dosage and the length have a correlation.
+```{r}
+pairs(ToothGrowth$len~ToothGrowth$dose)
+cor.test(ToothGrowth$len, ToothGrowth$dose)
+0.8026913*.8026913
+```
+
+This is a pearson's correlation. It tests to see if there is a significant correlation at an alpha of 0.05 as well as giving the R value. The p-value of 1.233x10^-14 shows that it is highly significant and with an R value of 0.8026913, we would have an R^2 of 0.644, meaning that 64% of the variation in the length can be determined by the dose.
